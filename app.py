@@ -2,6 +2,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
 from data_processing import load_and_process, EXCEL_PATH
 
 st.set_page_config(

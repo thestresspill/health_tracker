@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 # ---------- CONFIG ----------
 EXCEL_PATH = "Food Log Main.xlsx"
 
