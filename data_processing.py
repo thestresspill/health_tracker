@@ -14,11 +14,18 @@ SHEET_WORKOUT = "Workouts 19oct"
 # ---------- CORE HELPERS ----------
 def date_format(df, date_col="date"):
     df[date_col] = pd.to_datetime(df[date_col])
-    df["year"] = df[date_col].dt.year
-    df["week"] = df[date_col].dt.isocalendar().week
+    # 1. Get BOTH ISO Year and ISO Week
+    iso_data = df[date_col].dt.isocalendar()
+    df["year"] = iso_data.year.astype(int)  # Use ISO Year here!
+    df["week"] = iso_data.week.astype(int)
+    
     df["day_name"] = df[date_col].dt.day_name()
+    
+    # 2. Apply the continuous week logic using the ISO Year
+    # Now Dec 29-31 2025 will have year 2026, so (2026-2025)*52 = 52.
+    # 52 + Week 1 = Week 53.
+    df["week"] = df["week"] + (df["year"] - 2025) * 52
     return df
-
 
 def daily_agg(df):
     df_sum = df.groupby(["date"], as_index=False).agg(
